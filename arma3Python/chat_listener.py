@@ -4,6 +4,9 @@ from dotenv import load_dotenv
 
 import configparser
 
+from utils.helper import handle_unit_command, handle_unit_management
+from arma_bridge import send_to_arma
+
 load_dotenv()
 
 twitch_channel = os.environ.get('TWITCH_CHANNEL')
@@ -22,42 +25,23 @@ class Bot(commands.Bot):
     
     @commands.command()
     async def hello(self, ctx: commands.Context):
-        # Here we have a command hello, we can invoke our command with our prefix and command name
-        # e.g ?hello
-        # We can also give our commands aliases (different names) to invoke with.
-
-        # Send a hello back!
-        # Sending a reply back to the channel is easy... Below is an example.
         print(ctx.author.name)
         await ctx.send(f'Hello {ctx.author.name}!')
 
-    @commands.command(name='attack')
-    async def attack_command(self, ctx):
-        print(f'{ctx.author.name} issued an attack command!')
-        await self.send_to_arma('attack')
+    @commands.command(name='attack', aliases="Attack")
+    async def attack_command(self, ctx, objective):
+        await handle_unit_command(ctx, 'attack', objective, self)
 
     @commands.command(name='defend')
-    async def defend_command(self, ctx):
-        print(f'{ctx.author.name} issued a defend command!')
-        await self.send_to_arma('defend')
+    async def defend_command(self, ctx, objective):
+        await handle_unit_command(ctx, 'defend', objective, self)
 
     @commands.command(name='spawn')
-    async def spawn_command(self, ctx):
-        print(f'{ctx.author.name} issued a spawn command!')
-        await self.send_to_arma('spawn')
+    async def spawn_command(self, ctx, objective):
+        await handle_unit_management(ctx, 'spawn', self)
 
     async def send_to_arma(self, command):
-        print(f"Sending command to Arma 3: {command}")
-        config.read("E:/Games/Steam/steamapps/common/Arma 3/!Workshop/@INIDBI2 - Official extension/db/76561198013495507.ini")
-
-        if not config.has_section('Viewer Command'):
-            config.add_section('Viewer Command')
-            config.set('Viewer Command', 'command', f'""{command}""')
-        else:
-            config.set('Viewer Command', 'command',  f'""{command}""')
-        
-        with open('E:/Games/Steam/steamapps/common/Arma 3/!Workshop/@INIDBI2 - Official extension/db/76561198013495507.ini', 'w') as configfile:
-            config.write(configfile)
+        send_to_arma(command)
 
 bot = Bot()
 bot.run()

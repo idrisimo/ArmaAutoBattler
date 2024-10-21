@@ -1,11 +1,15 @@
-import socket
+import configparser
 
-class Bot(commands.Bot):
+config = configparser.ConfigParser()
 
-    async def send_to_arma(self, command):
-        # Example of sending the command to Arma 3 via a local socket
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.connect(('localhost', 12345))  # Example port, adjust accordingly
-            s.sendall(command.encode('utf-8'))
-            data = s.recv(1024)
-            print(f"Received from Arma: {data.decode('utf-8')}")
+def send_to_arma(command):
+    print(f"Sending command to Arma 3: {command[1]}")
+    config.read("E:/Games/Steam/steamapps/common/Arma 3/!Workshop/@INIDBI2 - Official extension/db/database.ini")
+
+    if not config.has_section('Viewer Command'):
+        config.add_section('Viewer Command')
+    
+    config.set('Viewer Command', 'command', f'""{command[1]}""')
+    
+    with open('E:/Games/Steam/steamapps/common/Arma 3/!Workshop/@INIDBI2 - Official extension/db/database.ini', 'w') as configfile:
+        config.write(configfile)
