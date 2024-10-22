@@ -1,6 +1,5 @@
-[] execVM "spawn.sqf";
-[] execVM "movementControl.sqf";
-// [] execVM "groupRoster.sqf";
+[] execVM "scripts\spawn.sqf";
+[] execVM "scripts\movementControl.sqf";
 
 //Check if database exists
 databaseName = "database";
@@ -10,10 +9,10 @@ _inidbi = ["new", databaseName] call OO_INIDBI;
 _fileExist = "exists" call _inidbi;
 if(_fileExist) then {
     hint "File Exists, getting data";
-    null = [] execVM "getData.sqf";
+    null = [] execVM "scripts\getData.sqf";
 } else {
     hint "File doesn't Exists, creating database";
-    null = [_playerName] execVM "createDatabase.sqf";
+    null = [_playerName] execVM "scripts\createDatabase.sqf";
 };
 
 player addAction ["Spawn Unit", {
@@ -61,7 +60,7 @@ while {true} do {
         armaCommand = ""; 
     } else {
 		// hint "no armaCommand";
-		null = [] execVM "getData.sqf";
+		null = [] execVM "scripts\getData.sqf";
 	};
 
     sleep 1; // Polling interval
