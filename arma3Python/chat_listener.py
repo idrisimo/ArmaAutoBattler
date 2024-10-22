@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 
 import configparser
 
-from utils.helper import handle_unit_command, handle_unit_management
-from arma_bridge import send_to_arma
+from utils.helper import handle_unit_command, handle_unit_spawning
+from arma_bridge import write_command_to_db
 
 load_dotenv()
 
@@ -18,6 +18,7 @@ class Bot(commands.Bot):
 
     def __init__(self):
         super().__init__(token=twitch_token, prefix='!', initial_channels=[twitch_channel])
+        self.write_command_to_db = write_command_to_db
 
     async def event_ready(self):
         print(f'Logged in as | {self.nick}')
@@ -38,10 +39,7 @@ class Bot(commands.Bot):
 
     @commands.command(name='spawn')
     async def spawn_command(self, ctx, objective):
-        await handle_unit_management(ctx, 'spawn', self)
-
-    async def send_to_arma(self, command):
-        send_to_arma(command)
+        await handle_unit_spawning(ctx, 'spawn', self)
 
 bot = Bot()
 bot.run()
