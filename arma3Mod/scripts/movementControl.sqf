@@ -7,7 +7,7 @@ moveCommand = {
 
 	(call compile format ["%1", _groupName]) move _destination;
 
-	if (_moveType == "attack") {
+	if (_moveType == "attack") then {
 		hint "Attack Command Received";
 		// Monitor until movement is complete
 		waitUntil { 
