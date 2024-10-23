@@ -1,5 +1,7 @@
 import os
+import requests
 from twitchio.ext import commands
+from twitchio.channel import Channel
 from dotenv import load_dotenv
 
 import configparser
@@ -11,6 +13,7 @@ load_dotenv()
 
 twitch_channel = os.environ.get('TWITCH_CHANNEL')
 twitch_token = os.environ.get('TWITCH_TOKEN')
+client_id = os.environ.get('CLIENT_ID')
 print(f"Using token: {twitch_token}")
 config = configparser.ConfigParser()
 
@@ -30,8 +33,14 @@ class Bot(commands.Bot):
     async def hello(self, ctx: commands.Context):
         print(ctx.author.name)
         await ctx.send(f'Hello {ctx.author.name}!')
-
+    
+    async def event_command_error(self, ctx: commands.Context, error: Exception) -> None:
+        # return await super().event_command_error(context, error)
+        await ctx.send(f" uhoh {ctx.author.name}, something went wrong: {error}")
+    
+    
     @commands.command(name='attack', aliases="Attack")
+    @commands.cooldown(3, 45, commands.Bucket.user)
     async def attack_command(self, ctx, objective):
         user_exists = handle_check_user_exists(ctx, self)
         if user_exists:
