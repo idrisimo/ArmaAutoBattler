@@ -20,7 +20,7 @@ def join_new_player(command):
         
 def get_group_status(twitch_username):
     config.read("E:/Games/Steam/steamapps/common/Arma 3/!Workshop/@INIDBI2 - Official extension/db/database.ini")
-    if config.has_option(twitch_username):
+    if config.has_option("Team Status", twitch_username):
         return config.get("Team Status", twitch_username)
     else:
         return ""

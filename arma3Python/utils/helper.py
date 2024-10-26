@@ -15,3 +15,4 @@ async def handle_check_user_exists(ctx, bot):
         return True
     else:
         return False
+
