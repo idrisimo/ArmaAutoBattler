@@ -12,7 +12,7 @@ def join_new_player(command):
     
     if not config.has_option("Team Status", twitch_username):
         command_type = command[1]
-        config.set("Team Status", twitch_username, f"['fireTeam', '{command_type}', '', 'new']")
+        config.set("Team Status", twitch_username, f"['fireTeam', '{command_type}', '', 'idle']")
         with open('E:/Games/Steam/steamapps/common/Arma 3/!Workshop/@INIDBI2 - Official extension/db/database.ini', 'w') as configfile:
             config.write(configfile)
     else:
