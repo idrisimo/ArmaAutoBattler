@@ -2,7 +2,7 @@
 
 _inidbi = ["new", databaseName] call OO_INIDBI;
 
-//Get command Data
+//Get  Data
 _twitchCommand = ["read", ["Viewer Command", "Command", []]] call _inidbi;
 
 armaCommand = _twitchCommand;
