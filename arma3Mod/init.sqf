@@ -68,6 +68,16 @@ while {true} do {
                     hint "not able to spawn";
                 };
             };
+
+            case "attack": {
+  
+            };
+
+            case "defend": {
+              if(_groupName in _bluforGroupIDArray && (_groupStatus != "dead" || _groupStatus != "moving") && _objective != "") then {
+                    _moveCommand = [_groupName, playerBase, "defend"] call moveCommand;
+                };
+            };
         };
 
     } forEach _twitchGroups;
