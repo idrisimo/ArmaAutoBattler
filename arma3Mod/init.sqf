@@ -14,6 +14,7 @@ databaseName = "database";
 bluforGroups = allGroups select {side _x == west};
 opforGroups = allGroups select {side _x == east};
 playerBase = markerPos "playerSpawnMarker";
+enemyBases = [markerPos "enemyBase1", markerPos "enemyBase2", markerPos "enemyBase3" ]
 missionNamespace setVariable ["bluforGroups", bluforGroups];
 missionNamespace setVariable ["twitchGroups", []];
 // initialise global event queue
@@ -59,6 +60,8 @@ while {true} do {
         _groupObjective = _x select 1 select 2;
         _groupStatus = _x select 1 select 3;
 
+        _destination = []
+
         switch (_groupCommand) do {
             case "joinGame": {
                 if !(_groupName in _bluforGroupIdArray) then {
@@ -70,11 +73,26 @@ while {true} do {
             };
 
             case "attack": {
-  
+                if(_groupName in _bluforGroupIDArray && (_groupStatus != "dead" || _groupStatus != "moving") && _objective != "") then {
+                    switch (_groupObjective) do {
+                        case "A": {
+                            _destination = enemyBases select 0
+                        };
+
+                        case "B": {
+                            _destination = enemyBases select 1
+                        };
+
+                        case "C": {
+                            _destination = enemyBases select 2
+                        };
+                    };
+                    _moveCommand = [_groupName, _destination, "defend"] call moveCommand;
+                };
             };
 
             case "defend": {
-              if(_groupName in _bluforGroupIDArray && (_groupStatus != "dead" || _groupStatus != "moving") && _objective != "") then {
+              if(_groupName in _bluforGroupIDArray && (_groupStatus != "dead" || _groupStatus != "moving")) then {
                     _moveCommand = [_groupName, playerBase, "defend"] call moveCommand;
                 };
             };

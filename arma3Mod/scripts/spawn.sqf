@@ -1,5 +1,3 @@
-
-
 /*
     Function to spawn a group of units and assign a group name
     Params:
@@ -17,7 +15,6 @@ spawnUnits = {
         ["_side", west],             // Default side is NATO
         ["_groupType", ""],          // Group type to retrieve from database. (e.g., fireTeam)
         ["_position", []],          // Array of positions (x, y, z)
-        // ["_unitNames", []],          // Array of names for the units
         ["_behavior", "FORM"],      // Default behavior is AWARE
         ["_groupName", ""]           // Optional: Group name
     ];
@@ -70,7 +67,7 @@ spawnUnits = {
     // Publish the "GroupSpawned" event with the new group data
     _eventQueue pushBack ["GroupSpawned", _group];
     missionNamespace setVariable ["eventQueue", _eventQueue];
-
+    // hint format ["spawned group %1", groupId _group];
     // Return the array of spawned units
     _spawnedUnits;
 };

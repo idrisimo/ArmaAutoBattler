@@ -24,6 +24,19 @@ def get_group_status(twitch_username):
         return config.get("Team Status", twitch_username)
     else:
         return ""
+    
+def delete_group(twitch_username):
+    config.read("E:/Games/Steam/steamapps/common/Arma 3/!Workshop/@INIDBI2 - Official extension/db/database.ini")
+    if config.has_option("Team Status", twitch_username):
+        config.remove_option("Team Status", twitch_username)
+        with open('E:/Games/Steam/steamapps/common/Arma 3/!Workshop/@INIDBI2 - Official extension/db/database.ini', 'w') as configfile:
+            config.write(configfile)
+            print("group deleted")
+
+    else:
+        print("unable to delete group.")
+        
+
 
 def write_command_to_db(command):
     twitch_username = command[0]

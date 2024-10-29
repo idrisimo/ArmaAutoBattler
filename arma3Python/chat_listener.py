@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 import configparser
 
-from utils.helper import handle_unit_command, handle_joining_game, handle_check_user_exists
+from utils.helper import handle_unit_command, handle_joining_game, handle_check_user_exists, handle_delete_group
 import arma_bridge as ab
 
 load_dotenv()
@@ -24,6 +24,7 @@ class Bot(commands.Bot):
         self.write_command_to_db = ab.write_command_to_db
         self.join_new_player = ab.join_new_player
         self.get_group_status = ab.get_group_status
+        self.delete_group = ab.delete_group
 
     async def event_ready(self):
         print(f'Logged in as | {self.nick}')
@@ -52,11 +53,11 @@ class Bot(commands.Bot):
 
     @commands.command(name='defend', aliases="Defend")
     @commands.cooldown(3, 45, commands.Bucket.user)
-    async def defend_command(self, ctx, objective):
+    async def defend_command(self, ctx):
         user_data = self.get_group_status(ctx.author.name)
         if user_data:
             print(f"player exists, writing command to db")
-            await handle_unit_command(ctx, 'defend', objective, self)
+            await handle_unit_command(ctx, 'defend', "",self)
             print(f"Command 'defend' written for {ctx.author.name}")
         else:
             # TODO add function for whisper to viewer
@@ -73,6 +74,12 @@ class Bot(commands.Bot):
         else:
             # TODO add function for whisper to viewer
             print(f"player already exists")
+            
+    @commands.command(name='delete')
+    @commands.cooldown(3, 45, commands.Bucket.user)
+    async def delete_group(self, ctx):
+        print("deleting")
+        deleted_data = self.delete_group(ctx.author.name)
 bot = Bot()
 bot.run()
 

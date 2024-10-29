@@ -1,8 +1,12 @@
 
 
 async def handle_unit_command(ctx, command_type, objective, bot):
-    print(f'{ctx.author.name} issued a {command_type} command on objective {objective}!')
-    bot.write_command_to_db([ctx.author.name, command_type, objective])
+    if command_type == "attack":
+        print(f'{ctx.author.name} issued a {command_type} command on objective {objective}!')
+        bot.write_command_to_db([ctx.author.name, command_type, objective])
+    else:
+        print(f'{ctx.author.name} issued a {command_type} command!')
+        bot.write_command_to_db([ctx.author.name, command_type, ""])
 
 async def handle_joining_game(ctx, command_type, bot):
     print(f'{ctx.author.name} joined the fight!')
@@ -16,3 +20,6 @@ async def handle_check_user_exists(ctx, bot):
     else:
         return False
 
+
+async def handle_delete_group(ctx, bot):
+    bot.delete_group(ctx.author.name)
