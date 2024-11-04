@@ -14,6 +14,14 @@ private _bluforGroups = missionNamespace getVariable ["bluforGroups", []];
         case "BlueGroupEngaged": {
             hint format ["Blue Group %1 is engaged in combat.", _data];
             // Additional handling logic for "BlueGroupEngaged" event here
+            _groupData = spawnDataTemp;
+			_groupName = (_groupData select 0);
+			_groupType = (_groupData select 1);
+			_groupCommand = (_groupData select 2);
+			_groupObjective = (_groupData select 3);
+			_groupStatus = (_groupData select 4);
+
+			null = [_groupName, _groupType, _groupCommand, _groupObjective, "engaged"] execVM "scripts\setDBGroups.sqf"
         };
 
 		case "GroupSpawned": {

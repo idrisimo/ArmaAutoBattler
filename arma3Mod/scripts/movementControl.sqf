@@ -28,6 +28,6 @@ moveCommand = {
         // Update last known position of the leader
         _lastCheckPos = position (leader _group);
         
-        sleep 2;  // Check every 2 seconds
+        sleep 4;  // Check every 2 seconds
     };
 };
